@@ -4,8 +4,8 @@ var path = require('path');
 
 var Stream = require('./stream');
 
-var Uglify = function(fuller, options) {
-	this.options = options || {};
+var Uglify = function(fuller, plan) {
+	this.options = plan ? plan.stream || {} : {};
 	this.options.compress = !fuller.o.dev;
 };
 

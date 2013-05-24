@@ -2,7 +2,7 @@
 	"name": "fuller-uglify",
 	"version": "0.0.1",
 	"description": "Fuller plugin: js uglifying",
-	"keywords": ["js", "fuller", "uglify", "automation"],
+	"keywords": ["js", "fuller", "build", "uglify", "automation"],
 	"author": "Alexey Novikov (http://2dubs.com)",
 	"preferGlobal": true,
 	"private": false,
@@ -14,7 +14,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git@github.com:velocityzen/fuller.git"
+		"url": "git@github.com:fullerjs/fuller-uglify.git"
 	},
 	"main": "./index"
 }
