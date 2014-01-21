@@ -1,6 +1,6 @@
 {
 	"name": "fuller-uglify",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"license" : "BSD",
 	"description": "Fuller tool: js uglifying",
 	"keywords": ["js", "fuller", "build", "uglify", "automation"],
