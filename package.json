@@ -1,8 +1,8 @@
 {
 	"name": "fuller-uglify",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"license" : "BSD",
-	"description": "Fuller plugin: js uglifying",
+	"description": "Fuller tool: js uglifying",
 	"keywords": ["js", "fuller", "build", "uglify", "automation"],
 	"author": "Alexey Novikov (http://2dubs.com)",
 	"preferGlobal": true,
