@@ -5,8 +5,8 @@ var path = require('path');
 var Stream = require('./stream');
 
 var Uglify = function(fuller, plan) {
-	this.options = plan ? plan.stream || {} : {};
-	this.options.compress = !fuller.options.dev;
+	this.options = plan.defaults.stream || {};
+	this.options.compress = !plan.defaults.dev;
 };
 
 Uglify.prototype.getStream = function() {
