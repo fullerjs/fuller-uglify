@@ -1,12 +1,14 @@
 "use strict";
-var fs = require('fs');
-var path = require('path');
-var UglifyJS = require('uglify-js');
-var compressor = UglifyJS.Compressor();
+const fs = require("fs");
+const path = require("path");
+const UglifyJS = require("uglify-js");
+const compressor = UglifyJS.Compressor();
 
-var FILE_ENCODING = 'utf-8';
+const FILE_ENCODING = "utf-8";
 
-var Uglify = function(fuller, options) {
+let Uglify = function(fuller, options) {
+	fuller.bind(this);
+
 	this.Stream = fuller.streams.Capacitor;
 	this.compress = !options.dev;
 	this.src = options.src;
@@ -14,13 +16,13 @@ var Uglify = function(fuller, options) {
 };
 
 Uglify.prototype.build = function(stream, master) {
-	var self = this,
+	let self = this,
 		next = new this.Stream(this.compress, function(result, cb) {
 			self.uglify(result, cb);
 		});
 
 	if(typeof stream === "string") {
-		var src = path.join(this.src, stream);
+		let src = path.join(this.src, stream);
 		this.addDependence(src, master);
 		return fs.createReadStream(src, {encoding: FILE_ENCODING}).pipe(next);
 	} else {
@@ -29,22 +31,24 @@ Uglify.prototype.build = function(stream, master) {
 };
 
 Uglify.prototype.uglify = function(jsString, cb) {
-	var ast;
-
 	try {
-		ast = UglifyJS.parse(jsString);
+		let ast = UglifyJS.parse(jsString);
+		ast.figure_out_scope();
+		ast = ast.transform(compressor);
+		ast.figure_out_scope();
+		ast.compute_char_frequency();
+		ast.mangle_names();
+
+		cb(null, ast.print_to_string());
 	} catch (err) {
-		cb(err);
-		process.exit();
+		this.error({
+			message: err.message,
+			line: err.line,
+			column: err.col
+			//file:
+		});
+		cb();
 	}
-
-	ast.figure_out_scope();
-	ast = ast.transform(compressor);
-	ast.figure_out_scope();
-	ast.compute_char_frequency();
-	ast.mangle_names();
-
-	cb(null, ast.print_to_string());
 };
 
 module.exports = Uglify;
