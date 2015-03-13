@@ -1,8 +1,8 @@
 "use strict";
 let path = require("path");
 let through2 = require("through2");
-let jsp = require("uglify-js").parser;
-let pro = require("uglify-js").uglify;
+let uglifyjs = require("uglify-js");
+let compressor = uglifyjs.Compressor();
 
 let Uglify = function(fuller, options) {
 	fuller.bind(this);
@@ -13,11 +13,14 @@ let Uglify = function(fuller, options) {
 
 Uglify.prototype.compile = function(jsString, master, cb) {
 	try {
-		let ast = jsp.parse(jsString); // parse code and get the initial AST
-		ast = pro.ast_mangle(ast); // get a new AST with mangled names
-		ast = pro.ast_squeeze(ast); // get an AST with compression optimizations
+		let ast = uglifyjs.parse(jsString);
+		ast.figure_out_scope();
+		ast = ast.transform(compressor);
+		ast.figure_out_scope();
+		ast.compute_char_frequency();
+		ast.mangle_names();
 
-		cb(null, pro.gen_code(ast)); // compressed code here
+		cb(null, ast.print_to_string());
 	} catch (err) {
 		this.error({
 			message: err.message,
