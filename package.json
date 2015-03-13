@@ -1,17 +1,19 @@
 {
 	"name": "fuller-uglify",
 	"version": "0.3.0",
-	"license" : "BSD",
+	"license" : "MIT",
 	"description": "Fuller tool: js uglifying",
 	"keywords": ["js", "fuller", "build", "uglify", "automation"],
 	"author": "Alexey Novikov (http://2dubs.com)",
 	"preferGlobal": true,
 	"private": false,
 	"dependencies": {
-		"uglify-js":"~2.4.12"
+		"uglify-js":"~2.4.12",
+		"through2": "^0.6.3"
 	},
 	"engines": {
-		"node": "~0.10.0"
+		"node": "~0.12.0",
+		"iojs": "^1.0.0"
 	},
 	"repository": {
 		"type": "git",

@@ -1,54 +1,54 @@
 "use strict";
-const fs = require("fs");
-const path = require("path");
-const UglifyJS = require("uglify-js");
-const compressor = UglifyJS.Compressor();
-
-const FILE_ENCODING = "utf-8";
+let path = require("path");
+let through2 = require("through2");
+let jsp = require("uglify-js").parser;
+let pro = require("uglify-js").uglify;
 
 let Uglify = function(fuller, options) {
 	fuller.bind(this);
 
-	this.Stream = fuller.streams.Capacitor;
 	this.compress = !options.dev;
-	this.src = options.src;
 	this.dst = options.dst;
 };
 
-Uglify.prototype.build = function(stream, master) {
-	let self = this,
-		next = new this.Stream(this.compress, function(result, cb) {
-			self.uglify(result, cb);
-		});
-
-	if(typeof stream === "string") {
-		let src = path.join(this.src, stream);
-		this.addDependence(src, master);
-		return fs.createReadStream(src, {encoding: FILE_ENCODING}).pipe(next);
-	} else {
-		return stream.pipe(next);
-	}
-};
-
-Uglify.prototype.uglify = function(jsString, cb) {
+Uglify.prototype.compile = function(jsString, master, cb) {
 	try {
-		let ast = UglifyJS.parse(jsString);
-		ast.figure_out_scope();
-		ast = ast.transform(compressor);
-		ast.figure_out_scope();
-		ast.compute_char_frequency();
-		ast.mangle_names();
+		let ast = jsp.parse(jsString); // parse code and get the initial AST
+		ast = pro.ast_mangle(ast); // get a new AST with mangled names
+		ast = pro.ast_squeeze(ast); // get an AST with compression optimizations
 
-		cb(null, ast.print_to_string());
+		cb(null, pro.gen_code(ast)); // compressed code here
 	} catch (err) {
 		this.error({
 			message: err.message,
 			line: err.line,
-			column: err.col
-			//file:
+			column: err.col,
+			file: path.join(this.dst, master)
 		});
 		cb();
 	}
 };
+
+Uglify.prototype.build = function(stream, master) {
+	if(!this.compress) { return stream;}
+
+	let self = this,
+		buffer = [];
+
+	return stream.pipe( through2(
+		function(chunk, enc, cb) {
+			buffer.push(chunk);
+			cb();
+		},
+		function(cb) {
+			let that = this;
+			self.compile(buffer.join(""), master, function(err, result) {
+				!err && that.push(result);
+				cb();
+			});
+		}
+	));
+};
+
 
 module.exports = Uglify;

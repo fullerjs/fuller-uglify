@@ -1,6 +1,5 @@
-# Fuller #
+# Uglify js tool for Fuller #
 **Build everything with right tool**
+[For more info about fuller](https://github.com/fullerjs/fuller)
 
-## Uglify tool for Mr. Fuller's js tool ##
-
-[For more info about go there](https://github.com/fullerjs/fuller)
+*In fuller's dev mode (-z option) outputs untouched js.*
