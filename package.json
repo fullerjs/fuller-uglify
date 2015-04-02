@@ -5,8 +5,6 @@
 	"description": "Fuller tool: js uglifying",
 	"keywords": ["js", "fuller", "build", "uglify", "automation"],
 	"author": "Alexey Novikov (http://2dubs.com)",
-	"preferGlobal": true,
-	"private": false,
 	"dependencies": {
 		"uglify-js":"~2.4.12"
 	},
