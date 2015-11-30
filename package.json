@@ -1,16 +1,22 @@
 {
-	"name": "fuller-uglify",
-	"version": "0.3.0",
-	"license" : "MIT",
-	"description": "Fuller tool: js uglifying",
-	"keywords": ["js", "fuller", "build", "uglify", "automation"],
-	"author": "Alexey Novikov (http://2dubs.com)",
-	"dependencies": {
-		"uglify-js":"^2.6.0"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git@github.com:fullerjs/uglify.git"
-	},
-	"main": "./index"
+  "name": "fuller-uglify",
+  "version": "0.3.1",
+  "license": "MIT",
+  "description": "Fuller tool: js uglifying",
+  "keywords": [
+    "js",
+    "fuller",
+    "build",
+    "uglify",
+    "automation"
+  ],
+  "author": "Alexey Novikov (http://2dubs.com)",
+  "dependencies": {
+    "uglify-js": "^2.6.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:fullerjs/uglify.git"
+  },
+  "main": "./index"
 }
