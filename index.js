@@ -20,7 +20,7 @@ module.exports = function(f, mat, options, next) {
       }
 
       if (opts.warnings && res.warnings) {
-        res.warnings.forEach(w => console.log(w));
+        res.warnings.forEach(warn => f.log(warn));
       }
 
       next(null, mat.setContent(res.code));
