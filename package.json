@@ -12,7 +12,7 @@
   ],
   "author": "Alexey Novikov (http://2dubs.com)",
   "dependencies": {
-    "uglify-js": "^2.6.0"
+    "uglify-js": "^3.1.2"
   },
   "repository": {
     "type": "git",

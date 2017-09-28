@@ -1,28 +1,29 @@
 'use strict';
-let uglifyjs = require('uglify-js');
-let compressor = uglifyjs.Compressor();
+const uglify = require('uglify-js');
 
 module.exports = function(f, mat, options, next) {
   if (options.dev) {
     next(null, mat);
   } else {
-    mat.getContent(function(content) {
-      try {
-        let ast = uglifyjs.parse(content.toString());
-        ast.figure_out_scope();
-        ast = ast.transform(compressor);
-        ast.figure_out_scope();
-        ast.compute_char_frequency();
-        ast.mangle_names();
-        next(null, mat.setContent(ast.print_to_string()));
-      } catch (err) {
-        next({
+    mat.getContent( content => {
+      const opts = options.uglify || {};
+      const res = uglify.minify(content.toString(), opts);
+
+      if (res.error) {
+        const err = res.error;
+        return next({
           message: err.message,
           line: err.line,
           column: err.col,
           file: mat.dst().path
         });
       }
+
+      if (opts.warnings && res.warnings) {
+        res.warnings.forEach(w => console.log(w));
+      }
+
+      next(null, mat.setContent(res.code));
     });
   }
 };
