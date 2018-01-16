@@ -1,5 +1,5 @@
 'use strict';
-const uglify = require('uglify-js');
+const uglify = require('uglify-es');
 
 module.exports = function(f, mat, options, next) {
   if (options.dev) {
